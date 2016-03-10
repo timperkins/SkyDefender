@@ -1,8 +1,8 @@
 import SpriteKit
 import GameplayKit
 
-class NewBase: GKEntity {
-    var gunNode: Gun!
+class Base: GKEntity {
+    var gunNode: GunNode!
     let tiltSensitivity: CGFloat = 1.7
     var angle: CGFloat = 30 {
         didSet {
@@ -33,7 +33,7 @@ class NewBase: GKEntity {
         baseNode.anchorPoint = CGPoint(x: 0.5, y: 1)
         renderComponent.node.addChild(baseNode)
         
-        gunNode = Gun()
+        gunNode = GunNode()
         baseNode.addChild(gunNode)
         gunNode.angle = 1
         

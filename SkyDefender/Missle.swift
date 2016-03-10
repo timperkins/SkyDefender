@@ -1,7 +1,7 @@
 import SpriteKit
 import GameplayKit
 
-class NewMissle: GKEntity, ContactNotifiableType {
+class Missle: GKEntity, ContactNotifiableType {
     let rect = CGRect(origin: CGPoint(x: 0, y: -8), size: CGSize(width: 1, height: 8))
     let movingSpeed = CGFloat(400)
     var contactObjects = [GKEntity]()

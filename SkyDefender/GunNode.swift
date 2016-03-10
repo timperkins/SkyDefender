@@ -2,7 +2,7 @@ import UIKit
 import SpriteKit
 import AVFoundation
 
-class Gun: SKSpriteNode {
+class GunNode: SKSpriteNode {
     let theTexture = SKTexture(imageNamed: "gun")
     let tiltSensitivity: CGFloat = 1.7
     let fireDelay = 0.3
@@ -27,7 +27,7 @@ class Gun: SKSpriteNode {
         super.init(coder: aDecoder)
     }
 
-    func fireMissle() -> NewMissle? {
+    func fireMissle() -> Missle? {
         if !readyToFire { return nil }
         
         readyToFire = false
@@ -42,7 +42,7 @@ class Gun: SKSpriteNode {
         let gunTipY = CGFloat(cos(self.angle)) * adj
         let missleX = gunTipX + Util.deviceSize.width/2
         let missleY = gunTipY + parent!.frame.size.height
-        let missle = NewMissle(position: CGPoint(x: missleX, y: missleY), angle: self.angle)
+        let missle = Missle(position: CGPoint(x: missleX, y: missleY), angle: self.angle)
 
         let emitterNodePath = NSBundle.mainBundle().pathForResource("SmallSquareExplosion", ofType: "sks")!
         let emitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(emitterNodePath as String) as! SKEmitterNode

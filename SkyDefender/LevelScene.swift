@@ -14,15 +14,14 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
 //    var nextLevelButton: SKSpriteNode!
 //    var levelLabel: SKLabelNode!
 //    var levelInProgress = false
-    var base: NewBase!
-    var gun: Gun!
+    var base: Base!
     var levelData: [[String: AnyObject]]!
     var pauseButton: ButtonNode!
     var levelScore: LevelScore!
-    var planes = [NewPlane]()
+    var planes = [Plane]()
     var backgroundMusic: SKAudioNode!
     
-    var newBackground: Background!
+    var background: Background!
     enum State {
         case Playing
     }
@@ -32,10 +31,10 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         anchorPoint = CGPoint(x: 0, y: 0)
         
         backgroundMusic = SKAudioNode(fileNamed: "background-music.m4a")
-        addChild(backgroundMusic)
+//        addChild(backgroundMusic)
         
-        NewPlane.loadAssets()
-        NewMissle.loadAssets()
+        Plane.loadAssets()
+        Missle.loadAssets()
         
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVectorMake(0, -0.3)
@@ -43,9 +42,9 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         let url = NSBundle.mainBundle().URLForResource("LevelData", withExtension: "plist")!
         levelData = NSArray(contentsOfURL: url) as! [[String: AnyObject]]
         
-        newBackground = Background(name: levelData[0]["background"] as! String)
-        addChild(newBackground.renderComponent.node)
-        newBackground.setPosition(.Sky)
+        background = Background(name: levelData[0]["background"] as! String)
+        addChild(background.renderComponent.node)
+        background.setPosition(.Sky)
         
         levelScore = LevelScore()
         levelScore.renderComponent.node.position = CGPoint(x: 12, y: size.height - 12)
@@ -71,7 +70,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
             let posY:CGFloat = planeData["positionY"] as! CGFloat * (size.height - noFlyZoneTop - noFlyZoneBottom) + noFlyZoneBottom
             let position = CGPoint(x: posX, y: posY)
             let doAddPlane = SKAction.runBlock({
-                let plane = NewPlane(position: position, scene: self)
+                let plane = Plane(position: position, scene: self)
                 self.addChild(plane.renderComponent.node);
                 self.planes.append(plane)
             })
@@ -82,7 +81,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         }
         runAction(SKAction.sequence(steps))
         
-        base = NewBase()
+        base = Base()
         addChild(base.renderComponent.node)
         
         state = .Playing
@@ -133,7 +132,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func planeCrashed() {
-        newBackground.setPosition(.Shake)
+        background.setPosition(.Shake)
     }
     
     func initTitleLogo() {
@@ -193,12 +192,12 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         aimGuideCircle = SKSpriteNode(imageNamed: "aim-guide-circle")
         aimGuideCircle.zPosition = 5
         aimGuideCircle.hidden = true
-        newBackground.renderComponent.node.addChild(aimGuideCircle)
+        background.renderComponent.node.addChild(aimGuideCircle)
         
         aimGuideLine = SKSpriteNode(imageNamed: "aim-guide-line")
         aimGuideLine.zPosition = 5
         aimGuideLine.hidden = true
-        newBackground.renderComponent.node.addChild(aimGuideLine)
+        background.renderComponent.node.addChild(aimGuideLine)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

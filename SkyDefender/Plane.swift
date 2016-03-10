@@ -2,7 +2,7 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 
-class NewPlane: GKEntity, ContactNotifiableType {
+class Plane: GKEntity, ContactNotifiableType {
     var velocity = CGVector(dx: 50, dy: 0)
     var points = 0
     var physicsBody: SKPhysicsBody!
@@ -10,8 +10,10 @@ class NewPlane: GKEntity, ContactNotifiableType {
     var contactObjects = [GKEntity]()
     var didExplode = false
     var isFalling = false
+    var isFlipped = false
     var planeHitSound: AVAudioPlayer!
     var planeCrashSound: AVAudioPlayer!
+    var planeExhaust: SKEmitterNode!
     private var _node:SKNode!
 
     var renderComponent:RenderComponent {
@@ -46,6 +48,7 @@ class NewPlane: GKEntity, ContactNotifiableType {
         
         if position.x > 0 {
             // Flip
+            isFlipped = true
             velocity.dx = -velocity.dx
             renderComponent.node.xScale = -renderComponent.node.xScale
         }
@@ -57,6 +60,12 @@ class NewPlane: GKEntity, ContactNotifiableType {
         let healthComponent = HealthComponent(hp: 100)
         addComponent(healthComponent)
         renderComponent.node.addChild(healthComponent.getHealthBarOfWidth(texture.size().width))
+        
+        let emitterNodePath = NSBundle.mainBundle().pathForResource("PlaneExhaust", ofType: "sks")!
+        planeExhaust = NSKeyedUnarchiver.unarchiveObjectWithFile(emitterNodePath as String) as! SKEmitterNode
+        planeExhaust.position = CGPoint(x: -texture.size().width/2, y: -3)
+        planeExhaust.zPosition = 15
+        renderComponent.node.addChild(planeExhaust)
         
         let planeHitSoundFile = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("plane-hit", ofType: "wav")!)
         do {
@@ -91,7 +100,7 @@ class NewPlane: GKEntity, ContactNotifiableType {
         planeCrashSound.play()
     }
     
-    func hitByMissle(missle: NewMissle, contactPointInNode: CGPoint) {
+    func hitByMissle(missle: Missle, contactPointInNode: CGPoint) {
         missle.renderComponent.node.removeFromParent()
         let healthComponent = self.componentForClass(HealthComponent)!
         
@@ -123,7 +132,7 @@ class NewPlane: GKEntity, ContactNotifiableType {
     func fall(contactPointInNode: CGPoint) {
         isFalling = true
         self.physicsBody.density = 1000000 // We don't want anything (e.g., a missle) to move the plane while it's falling
-        
+        planeExhaust.runAction(SKAction.fadeAlphaTo(0, duration: 0.3))
         renderComponent.node.runAction(SKAction.waitForDuration(0.3), completion: {
             self.physicsBody.affectedByGravity = true
             
@@ -133,6 +142,8 @@ class NewPlane: GKEntity, ContactNotifiableType {
             }
             var rotate = SKAction.rotateToAngle(CGFloat(rotateAngle), duration: 5)
             self.renderComponent.node.runAction(rotate)
+            
+            self.planeExhaust.removeFromParent()
             
             let emitterNodePath = NSBundle.mainBundle().pathForResource("SquareSmoke", ofType: "sks")!
             let emitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(emitterNodePath as String) as! SKEmitterNode
@@ -178,7 +189,7 @@ class NewPlane: GKEntity, ContactNotifiableType {
             })
         }
         
-        if let missle = entity as? NewMissle {
+        if let missle = entity as? Missle {
             // Let missles pass by if this is falling
             if isFalling { return }
             
