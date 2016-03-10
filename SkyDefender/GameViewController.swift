@@ -10,8 +10,8 @@ class GameViewController: UIViewController {
         // TODO: remove below and swap for loadingscene
         let scene = LevelScene(size: view.bounds.size)
         scene.userData = NSMutableDictionary()
-        let level = Util.levels[0]
-        scene.userData?.setObject(level, forKey: "level")
+//        let level = Util.levels[0]
+//        scene.userData?.setObject(level, forKey: "level")
         
         let skView = view as! SKView
         skView.showsFPS = true

@@ -8,26 +8,6 @@ class Util {
     static let backgroundAnchorHeight: CGFloat = 80.0
     static let backgroundLength: CGFloat = Util.deviceSize.width
     
-    static let levels = [Level(
-        background: SKSpriteNode(imageNamed: "bg-1a"),
-        backgroundLayer2: SKSpriteNode(imageNamed: "bg-1b"),
-        backgroundLayer3: SKSpriteNode(imageNamed: "bg-1c"),
-        title: "Level 1",
-        levelPlanes: [
-            LevelPlane(plane: "SupplyPlane", delay: 0, position: CGPoint(x: 0, y: 0.5)),
-            LevelPlane(plane: "EnemyBomberPlane", delay: 0, position: CGPoint(x: 1, y: 0.4)),
-            LevelPlane(plane: "EnemyBomberPlane", delay: 0, position: CGPoint(x: 1, y: 0.3)),
-            LevelPlane(plane: "SupplyPlane", delay: 0, position: CGPoint(x: 1, y: 0.7)),
-            LevelPlane(plane: "EnemyBomberPlane", delay: 2, position: CGPoint(x: 0, y: 0.6)),
-            LevelPlane(plane: "EnemyBomberPlane", delay: 2, position: CGPoint(x: 0, y: 0.2)),
-            LevelPlane(plane: "EnemyBomberPlane", delay: 2, position: CGPoint(x: 1, y: 0.35)),
-            LevelPlane(plane: "EnemyBomberPlane", delay: 2, position: CGPoint(x: 1, y: 0.75)),
-            LevelPlane(plane: "EnemyBomberPlane", delay: 2, position: CGPoint(x: 0, y: 0.25)),
-            LevelPlane(plane: "EnemyBomberPlane", delay: 2, position: CGPoint(x: 1, y: 0.65)),
-            LevelPlane(plane: "EnemyBomberPlane", delay: 2, position: CGPoint(x: 0, y: 0.55 ))
-        ]
-    )]
-    
     static var healthContext = 0
     static var scoreContext = 1
     static var gameOverContext = 2

@@ -2,21 +2,20 @@ import SpriteKit
 import GameplayKit
 
 class LevelScene: SKScene, SKPhysicsContactDelegate {
-    var background: SKSpriteNode!
-    var backgroundLayer2: SKSpriteNode!
-    var backgroundLayer3: SKSpriteNode!
+//    var background: SKSpriteNode!
+//    var backgroundLayer2: SKSpriteNode!
+//    var backgroundLayer3: SKSpriteNode!
     var aimAnchorPoint: CGPoint!
     var aimAnchorAngle: CGFloat!
     var aimGuideCircle: SKSpriteNode!
     var aimGuideLine: SKSpriteNode!
-    var playButton: SKSpriteNode!
-    var previousLevelButton: SKSpriteNode!
-    var nextLevelButton: SKSpriteNode!
-    var levelLabel: SKLabelNode!
-    var levelInProgress = false
+//    var playButton: SKSpriteNode!
+//    var previousLevelButton: SKSpriteNode!
+//    var nextLevelButton: SKSpriteNode!
+//    var levelLabel: SKLabelNode!
+//    var levelInProgress = false
     var base: NewBase!
     var gun: Gun!
-    var level: Level!
     var levelData: [[String: AnyObject]]!
     var pauseButton: ButtonNode!
     var levelScore: LevelScore!
@@ -33,7 +32,6 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         anchorPoint = CGPoint(x: 0, y: 0)
         
         backgroundMusic = SKAudioNode(fileNamed: "background-music.m4a")
-//        backgroundMusic.runAction(SKAction.changeVolumeTo(0.8, duration: 0))
         addChild(backgroundMusic)
         
         NewPlane.loadAssets()
@@ -89,8 +87,6 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         
         state = .Playing
         initAimGuides()
-        
-        
     }
     
     func pause() {
@@ -144,54 +140,54 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         let titleLogo = SKSpriteNode(imageNamed: "title-logo")
         titleLogo.position = CGPoint(x: size.width/2, y: size.height/2)
         titleLogo.zPosition = 2
-        background.addChild(titleLogo)
+//        background.addChild(titleLogo)
         let delay = SKAction.waitForDuration(1)
         let move = SKAction.moveTo(CGPoint(x: size.width/2, y: size.height*1.5), duration: 2.5)
         let sequence = SKAction.sequence([delay, move])
         titleLogo.runAction(sequence)
     }
     
-    func initLevelSelectOptions() {
-        let delay = SKAction.waitForDuration(4)
-        let initOpts = SKAction.runBlock({
-            self.playButton = SKSpriteNode(imageNamed: "play-button")
-            self.playButton.zPosition = 4
-            self.playButton.alpha = 0
-            self.playButton.position = CGPoint(x: self.size.width/2, y: self.size.height/2-40)
-            self.background.addChild(self.playButton)
-            var fadeIn = SKAction.fadeInWithDuration(0.5)
-            self.playButton.runAction(fadeIn)
-            
-            self.levelLabel = SKLabelNode(fontNamed: Util.fontLight)
-            self.levelLabel.text = self.level!.title
-            self.levelLabel.fontSize = 50
-            self.levelLabel.alpha = 0
-            self.levelLabel.fontColor = SKColor.whiteColor()
-            self.levelLabel.position = CGPoint(x: self.size.width/2, y: self.size.height/2+80)
-            self.levelLabel.zPosition = 4
-            self.background.addChild(self.levelLabel)
-            fadeIn = SKAction.fadeInWithDuration(0.5)
-            self.levelLabel.runAction(fadeIn)
-            
-            self.previousLevelButton = SKSpriteNode(imageNamed: "left-chevron")
-            self.previousLevelButton.zPosition = 4
-            self.previousLevelButton.alpha = 0
-            self.previousLevelButton.position = CGPoint(x: 40, y: self.size.height/2)
-            self.background.addChild(self.previousLevelButton)
-            fadeIn = SKAction.fadeAlphaTo(0.2, duration: 0.5)
-            self.previousLevelButton.runAction(fadeIn)
-            
-            self.nextLevelButton = SKSpriteNode(imageNamed: "right-chevron")
-            self.nextLevelButton.zPosition = 4
-            self.nextLevelButton.alpha = 0
-            self.nextLevelButton.position = CGPoint(x: self.size.width-40, y: self.size.height/2)
-            self.background.addChild(self.nextLevelButton)
-            fadeIn = SKAction.fadeAlphaTo(0.2, duration: 0.5)
-            self.nextLevelButton.runAction(fadeIn)
-        })
-        let sequence = SKAction.sequence([delay, initOpts])
-        runAction(sequence)
-    }
+//    func initLevelSelectOptions() {
+//        let delay = SKAction.waitForDuration(4)
+//        let initOpts = SKAction.runBlock({
+//            self.playButton = SKSpriteNode(imageNamed: "play-button")
+//            self.playButton.zPosition = 4
+//            self.playButton.alpha = 0
+//            self.playButton.position = CGPoint(x: self.size.width/2, y: self.size.height/2-40)
+//            self.background.addChild(self.playButton)
+//            var fadeIn = SKAction.fadeInWithDuration(0.5)
+//            self.playButton.runAction(fadeIn)
+//            
+//            self.levelLabel = SKLabelNode(fontNamed: Util.fontLight)
+//            self.levelLabel.text = "Level label goes here"
+//            self.levelLabel.fontSize = 50
+//            self.levelLabel.alpha = 0
+//            self.levelLabel.fontColor = SKColor.whiteColor()
+//            self.levelLabel.position = CGPoint(x: self.size.width/2, y: self.size.height/2+80)
+//            self.levelLabel.zPosition = 4
+//            self.background.addChild(self.levelLabel)
+//            fadeIn = SKAction.fadeInWithDuration(0.5)
+//            self.levelLabel.runAction(fadeIn)
+//            
+//            self.previousLevelButton = SKSpriteNode(imageNamed: "left-chevron")
+//            self.previousLevelButton.zPosition = 4
+//            self.previousLevelButton.alpha = 0
+//            self.previousLevelButton.position = CGPoint(x: 40, y: self.size.height/2)
+//            self.background.addChild(self.previousLevelButton)
+//            fadeIn = SKAction.fadeAlphaTo(0.2, duration: 0.5)
+//            self.previousLevelButton.runAction(fadeIn)
+//            
+//            self.nextLevelButton = SKSpriteNode(imageNamed: "right-chevron")
+//            self.nextLevelButton.zPosition = 4
+//            self.nextLevelButton.alpha = 0
+//            self.nextLevelButton.position = CGPoint(x: self.size.width-40, y: self.size.height/2)
+//            self.background.addChild(self.nextLevelButton)
+//            fadeIn = SKAction.fadeAlphaTo(0.2, duration: 0.5)
+//            self.nextLevelButton.runAction(fadeIn)
+//        })
+//        let sequence = SKAction.sequence([delay, initOpts])
+//        runAction(sequence)
+//    }
     
     func initAimGuides() {
         aimGuideCircle = SKSpriteNode(imageNamed: "aim-guide-circle")
@@ -203,23 +199,6 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         aimGuideLine.zPosition = 5
         aimGuideLine.hidden = true
         newBackground.renderComponent.node.addChild(aimGuideLine)
-    }
-    
-    func initLaunchPlanes() {
-        let delay = SKAction.waitForDuration(5)
-        var steps = [SKAction]()
-        steps.append(delay)
-        for levelPlane in level!.levelPlanes {
-            let doAddPlane = SKAction.runBlock({
-                let plane = levelPlane.createPlane()
-                self.background.addChild(plane)
-            })
-            let doDelay = SKAction.waitForDuration(Double(levelPlane.delay!))
-            steps.append(doDelay)
-            steps.append(doAddPlane)
-        }
-        let doSequence = SKAction.sequence(steps)
-        runAction(doSequence)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
